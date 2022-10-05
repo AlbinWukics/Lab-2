@@ -1,0 +1,17 @@
+﻿[
+  {
+    "Name": "Knatte",
+    "Password": "123",
+    "Level": "gold"
+  },
+  {
+    "Name": "Fnatte",
+    "Password": "321",
+    "Level": "silver"
+  },
+  {
+    "Name": "Tjatte",
+    "Password": "213",
+    "Level": "bronze"
+  }
+]
