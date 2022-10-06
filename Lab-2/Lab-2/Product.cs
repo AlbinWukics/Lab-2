@@ -2,29 +2,34 @@
 
 public class Product
 {
-	private float _price;
+    private float _price;
 
-	public float Price
-	{
-		get { return _price; }
-		set { _price = value; }
-	}
+    public float Price
+    {
+        get { return _price; }
+        set { _price = value; }
+    }
 
-	private string _name;
+    private string _name;
 
-	public string Name
-	{
-		get { return _name; }
-		set { _name = value; }
-	}
+    public string Name
+    {
+        get { return _name; }
+        set { _name = value; }
+    }
 
-	private int _id;
+    private int _id;
 
-	public int Id
-	{
-		get { return _id; }
-		set { _id = value; }
-	}
+    public int Id
+    {
+        get { return _id; }
+        set { _id = value; }
+    }
 
-
+    public Product(int id, string name, float price)
+    {
+        Id = id;
+        Name = name;
+        Price = price;
+    }
 }

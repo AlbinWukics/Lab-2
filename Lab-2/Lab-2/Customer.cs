@@ -31,5 +31,10 @@ public class Customer
         Cart = new List<Product>();
     }
 
-
+	//IMPLEMENTERA
+    public override string ToString()
+    {
+        var toStringOutput = $"Namn: {Name}\nLösenord: {Password}\nKundvagn: {Cart}";
+        return toStringOutput;
+    }
 }

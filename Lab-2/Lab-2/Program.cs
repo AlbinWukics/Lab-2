@@ -2,45 +2,47 @@
 using Lab_2;
 
 var customers = new List<Customer>();
+var products = new List<Product>();
 var inputNamn = String.Empty;
 var inputchar = ' ';
 var inputPassword = String.Empty;
 var loginName = String.Empty;
-var loginOk = false;
-var loginOrReg = false;
-//var product = new Product();
+var loginOkBool = false;
+var loginOrRegBool = false;
+var mainMenuBool = true;
 
 customers.Add(new Customer("K", "1"));
 customers.Add(new Customer("Knatte", "123"));
 customers.Add(new Customer("Fnatte", "321"));
 customers.Add(new Customer("Tjatte", "213"));
 
+products.Add(new Product(1,"Äpple",10));
+products.Add(new Product(2,"Banan",15));
+products.Add(new Product(3,"Trocadero",20));
 
-LoginChoice();
-void LoginChoice()
+//var product = new Product();
+//string FilePath = "customers.json";
+//var customerlist = new List<Customer>();
+
+InitialLoginChoice();
+void InitialLoginChoice()
 {
-    while (loginOrReg == false)
+    while (loginOrRegBool == false)
     {
         Console.WriteLine("Hej\n1. Logga in\n2. Registera nytt konto");
-        inputchar = Console.ReadKey().KeyChar;
+        inputchar = Console.ReadKey(true).KeyChar;
         Console.Clear();
 
         switch (inputchar)
         {
             case '1':
-                loginOrReg = true;
+                loginOrRegBool = true;
                 LoginCheck();
-                while (loginOk)
-                {
-                    Console.WriteLine("inloggad");
-                    Console.ReadKey(true);
-                }
                 break;
 
             case '2':
-                loginOrReg = true;
-                Console.WriteLine("reigsterar ny kund");
-                Console.ReadKey(true);
+                loginOrRegBool = true;
+                AddCustomer();
                 break;
 
             default:
@@ -53,9 +55,28 @@ void LoginChoice()
     }
 }
 
+void AddCustomer()
+{
+    //lägg till kund
+    Console.WriteLine("Namn:");
+    inputNamn = Console.ReadLine();
+    Console.WriteLine("Lösenord:");
+    inputPassword = Console.ReadLine();
+
+    customers.Add(new Customer(inputNamn, inputPassword + ""));
+    loginName = inputNamn;
+    loginOkBool = true;
+    Console.Clear();
+    Console.WriteLine("Loggar in...");
+    Thread.Sleep(1000);
+    mainMenuBool = true;
+
+    MainMenu();
+}
+
 void LoginCheck()
 {
-    while (loginOk == false)
+    while (loginOkBool == false)
     {
         Console.Write("Namn: ");
         inputNamn = Console.ReadLine();
@@ -68,64 +89,95 @@ void LoginCheck()
             {
                 if (customer.Password == inputPassword)
                 {
-                    loginOk = true;
+                    loginOkBool = true;
                     loginName = customer.Name;
-                    break;
+                    Console.Clear();
+                    Console.WriteLine("Loggar in...");
+                    Thread.Sleep(1000);
+                    mainMenuBool = true;
+
+                    MainMenu();
+
+                    return;
                 }
-                else
+                else if (customer.Name.ToLower() == inputNamn.ToLower() && customer.Password != inputPassword)
                 {
                     //Fel lösenord, låt han försöka igen.
+                    loginOkBool = false;
                     Console.WriteLine("Fel lösenord.\nTryck för att försöka igen.");
                     Console.ReadKey(true);
                     Console.Clear();
-                    break;
+
+                    LoginCheck();
                 }
             }
-            else
-            {
-                //Om fel användarnamn, fråga om användaren vill lägga till nytt konto
-                Console.Clear();
-                Console.WriteLine("Kundnamn finns ej registrerat, vill du registrera ny kund?\n1. Ja\n2. Nej");
-                inputchar = Console.ReadKey().KeyChar;
-                Console.Clear();
+        }
 
-                if (inputchar == '1')
-                {
-                    Console.WriteLine("registerar ny kund");
-                    loginOk = true;
-                    break;
-                }
-                else
-                {
-                    //Väljer att försöka igen
-                    break;
-                }
+        //Om fel användarnamn, fråga om användaren vill lägga till nytt konto
+        Console.Clear();
+        Console.WriteLine("Kundnamn finns ej registrerat, vill du registrera ny kund?\n1. Ja\n2. Nej");
+        inputchar = Console.ReadKey(true).KeyChar;
+        Console.Clear();
 
-            }
+        if (inputchar == '1')
+        {
+            Console.WriteLine("Registera ny kund\n");
+            loginOkBool = true;
+            AddCustomer();
+        }
+
+        //Väljer att försöka igen eller ogiltig knapp
+
+    }
+}
+
+void MainMenu()
+{
+    while (mainMenuBool)
+    {
+        Console.Clear();
+        Console.WriteLine($"Välkommen in i värmen {loginName}!\n\n" +
+                          "1. Handla\n" +
+                          "2. Se kundvagn\n" +
+                          "3. Till kassan\n" +
+                          "4. Logga ut\n" +
+                          "5. Exit");
+        inputchar = Console.ReadKey(true).KeyChar;
+        Console.Clear();
+
+        switch (inputchar)
+        {
+            case '1':
+                ProductMenu();
+                break;
+            case '2':
+                //metod för Se kundvagn
+                break;
+            case '3':
+                //metod för Till kassan
+                break;
+            case '4':
+                loginName = String.Empty;
+                loginOkBool = false;
+                loginOrRegBool = false;
+                mainMenuBool = false;
+                InitialLoginChoice();
+                break;
+            case '5':
+                Environment.Exit(0);
+                break;
         }
     }
 }
 
-
-string FilePath = "customers.json";
-var customerlist = new List<Customer>();
-
-
-
-void AddCustomer()
+void ProductMenu()
 {
-    //lägg till kund
-    Console.WriteLine("Namn:");
-    inputNamn = Console.ReadLine();
-    Console.WriteLine("Lösenord:");
-    inputPassword = Console.ReadLine();
+    Console.Clear();
+    Console.WriteLine("Välkommen till Bidl, där allt är billigare.\n");
 
-    customers.Add(new Customer(inputNamn,inputPassword));
-    loginName = inputNamn;
-    loginOk = true;
+    
 
+    Console.ReadKey(true);
 }
-
-
 
 
