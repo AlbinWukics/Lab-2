@@ -32,4 +32,9 @@ public class Product
         Name = name;
         Price = price;
     }
+
+    public override string ToString()
+    {
+        return $"{Name} - {Price} SEK | ID: {Id}";
+    }
 }

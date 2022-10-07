@@ -34,7 +34,7 @@ public class Customer
 	//IMPLEMENTERA
     public override string ToString()
     {
-        var toStringOutput = $"Namn: {Name}\nLösenord: {Password}\nKundvagn: {Cart}";
-        return toStringOutput;
+        return $"Namn: {Name}\nLösenord: {Password}\nKundvagn: {Cart}";
+
     }
 }
