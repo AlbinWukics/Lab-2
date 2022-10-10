@@ -1,28 +1,25 @@
 ﻿namespace Lab_2;
 
-public class Customer
+public record Customer
 {
-	private string _name;
+    private string _name;
+    public string Name
+    {
+        get { return _name; }
+    }
 
-	public string Name
-	{
-		get { return _name; }
-	}
+    private string _password;
+    public string Password
+    {
+        get { return _password; }
+    }
 
-	private string _password;
-
-	public string Password
-	{
-		get { return _password; }
-	}
-
-	private List<Product> _cart;
-
-	public List<Product> Cart
-	{
-		get { return _cart; }
-		set { _cart = value; }
-	}
+    private List<Product> _cart;
+    public List<Product> Cart
+    {
+        get { return _cart; }
+        set { _cart = value; }
+    }
 
     public Customer(string name, string password)
     {
@@ -31,7 +28,7 @@ public class Customer
         Cart = new List<Product>();
     }
 
-	//IMPLEMENTERA
+    //IMPLEMENTERA
     public override string ToString()
     {
         return $"Namn: {Name}\nLösenord: {Password}\nKundvagn: {Cart}";

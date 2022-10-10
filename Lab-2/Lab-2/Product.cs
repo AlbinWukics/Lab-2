@@ -3,7 +3,6 @@
 public class Product
 {
     private float _price;
-
     public float Price
     {
         get { return _price; }
@@ -11,7 +10,6 @@ public class Product
     }
 
     private string _name;
-
     public string Name
     {
         get { return _name; }
@@ -19,7 +17,6 @@ public class Product
     }
 
     private int _id;
-
     public int Id
     {
         get { return _id; }

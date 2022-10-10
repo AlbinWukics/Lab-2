@@ -1,31 +1,28 @@
-﻿using System.Runtime.CompilerServices;
-using Lab_2;
-using Microsoft.VisualBasic.CompilerServices;
+﻿using Lab_2;
 
 var customers = new List<Customer>();
 var products = new List<Product>();
-var cart = new Customer("", "").Cart;
 var inputNamn = String.Empty;
 var inputchar = ' ';
 var inputint = 0;
 var inputstring = string.Empty;
 var inputPassword = String.Empty;
-var loginName = String.Empty;
 var loginOkBool = false;
 var loginOrRegBool = false;
-var mainMenuBool = true;
+var mainMenuBool = false;
+Customer loggedInCustomer = null;
 
 customers.Add(new Customer("K", "1"));
 customers.Add(new Customer("Knatte", "123"));
 customers.Add(new Customer("Fnatte", "321"));
 customers.Add(new Customer("Tjatte", "213"));
 
-products.Add(new Product(1, "Äpple", 10));
-products.Add(new Product(2, "Banan", 15));
-products.Add(new Product(3, "Trocadero", 20));
-
-//string FilePath = "customers.json";
-//var customerlist = new List<Customer>();
+products.AddRange(new []
+{
+    new Product(1, "Äpple",10),
+    new Product(2, "Banan", 15),
+    new Product(3, "Trocadero", 20)
+});
 
 InitialLoginChoice();
 void InitialLoginChoice()
@@ -67,7 +64,6 @@ void AddCustomer()
     inputPassword = Console.ReadLine();
 
     customers.Add(new Customer(inputNamn, inputPassword + ""));
-    loginName = inputNamn;
     loginOkBool = true;
     Console.Clear();
     Console.WriteLine("Loggar in...");
@@ -93,11 +89,12 @@ void LoginCheck()
                 if (customer.Password == inputPassword)
                 {
                     loginOkBool = true;
-                    loginName = customer.Name;
                     Console.Clear();
                     Console.WriteLine("Loggar in...");
                     Thread.Sleep(1000);
                     mainMenuBool = true;
+
+                    loggedInCustomer = customer;
 
                     MainMenu();
                 }
@@ -126,9 +123,7 @@ void LoginCheck()
             loginOkBool = true;
             AddCustomer();
         }
-
         //Väljer att försöka igen eller ogiltig knapp
-
     }
 }
 
@@ -137,7 +132,7 @@ void MainMenu()
     while (mainMenuBool)
     {
         Console.Clear();
-        Console.WriteLine($"Välkommen in i värmen {loginName}!\n\n" +
+        Console.WriteLine($"Välkommen in i värmen {inputNamn}!\n\n" +
                           "1. Handla\n" +
                           "2. Se kundvagn\n" +
                           "3. Till kassan\n" +
@@ -158,10 +153,11 @@ void MainMenu()
                 ToCheckout();
                 break;
             case '4':
-                loginName = String.Empty;
+                inputNamn = String.Empty;
                 loginOkBool = false;
                 loginOrRegBool = false;
                 mainMenuBool = false;
+
                 InitialLoginChoice();
                 break;
             case '5':
@@ -178,7 +174,7 @@ void ProductMenu()
 
         Console.Clear();
         Console.WriteLine("'R' - MainMenu\n" +
-                          "Välkommen till Bidl, där allt är billigare." +
+                          "Välkommen till Bidl, där allt är billigare.\n" +
                           "Knappa in ID:et på en vara för att lägga den i kundvagnen.\n");
 
         foreach (var product in products)
@@ -201,7 +197,7 @@ void ProductMenu()
 
                     for (int i = 0; i < inputint; i++)
                     {
-                        cart.Add(products[0]);
+                        loggedInCustomer.Cart.Add(products[0]);
                     }
 
                 }
@@ -241,7 +237,7 @@ void ProductMenu()
 
                     for (int i = 0; i < inputint; i++)
                     {
-                        cart.Add(products[1]);
+                        loggedInCustomer.Cart.Add(products[1]);
                     }
 
                 }
@@ -281,7 +277,7 @@ void ProductMenu()
 
                     for (int i = 0; i < inputint; i++)
                     {
-                        cart.Add(products[2]);
+                        loggedInCustomer.Cart.Add(products[2]);
                     }
 
                 }
@@ -323,7 +319,7 @@ void ShowCart()
     var idThree = 0;
     var totalPrice = 0f;
 
-    foreach (var product in cart)
+    foreach (var product in loggedInCustomer.Cart)
     {
         if (product.Id == 1)
         {
@@ -375,7 +371,7 @@ void ToCheckout()
     var idThree = 0;
     var totalPrice = 0f;
 
-    foreach (var product in cart)
+    foreach (var product in loggedInCustomer.Cart)
     {
         if (product.Id == 1)
         {
@@ -399,6 +395,12 @@ void ToCheckout()
 
     Console.WriteLine($"Totala priset:\n{totalPrice} SEK\n\n1. För att betala.");
 
+    Console.WriteLine();
+    foreach (var customer in customers)
+    {
+        Console.WriteLine(customer);
+    }
+
     inputchar = Console.ReadKey(true).KeyChar;
     if (inputchar == 'r')
     {
@@ -406,21 +408,10 @@ void ToCheckout()
     }
     else if (inputchar == '1')
     {
-        //rensa varukorg
+        loggedInCustomer.Cart.Clear();
     }
 }
 
 
-//void ShowList(List<Customer> kund)
-//{
-
-//    foreach (var a in kund)
-//    {
-//        Console.WriteLine($"Name: {a.Name} Password: {a.Password}");
-//    }
-
-//    Console.ReadKey(true);
-//}
-
-
-
+//string FilePath = "customers.json";
+//var customerlist = new List<Customer>();
