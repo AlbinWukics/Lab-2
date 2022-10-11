@@ -28,10 +28,17 @@ public record Customer
         Cart = new List<Product>();
     }
 
-    //IMPLEMENTERA
     public override string ToString()
     {
-        return $"Namn: {Name}\nLösenord: {Password}\nKundvagn: {Cart}";
+        var output = String.Empty;
+        output += $"Namn: {Name}\nLösenord: {Password}\n";
+        output += "Varukorg:\n";
+        foreach (var product in Cart)
+        {
+            output += $"{product}\n";
+        }
 
+        output += "\n";
+        return output;
     }
 }

@@ -10,7 +10,7 @@ var inputPassword = String.Empty;
 var loginOkBool = false;
 var loginOrRegBool = false;
 var mainMenuBool = false;
-Customer loggedInCustomer = null;
+Customer? loggedInCustomer = null;
 
 customers.Add(new Customer("K", "1"));
 customers.Add(new Customer("Knatte", "123"));
@@ -63,12 +63,23 @@ void AddCustomer()
     Console.WriteLine("Lösenord:");
     inputPassword = Console.ReadLine();
 
+    //Jag vet att denna ligger sist i listan, måste jag använda en Foreach-loop för att ge loggedInCustomer rätt värde?
     customers.Add(new Customer(inputNamn, inputPassword + ""));
     loginOkBool = true;
+    mainMenuBool = true;
     Console.Clear();
     Console.WriteLine("Loggar in...");
     Thread.Sleep(1000);
-    mainMenuBool = true;
+
+    foreach (var customer in customers)
+    {
+        if (customer.Name == inputNamn && customer.Password == inputPassword)
+        {
+            loggedInCustomer = customer;
+            break;
+        }
+    }
+
 
     MainMenu();
 }
@@ -82,6 +93,7 @@ void LoginCheck()
         Console.Write("Lösenord: ");
         inputPassword = Console.ReadLine();
 
+        //Med denna lösningen kan det inte finnas två konton med samma namn
         foreach (var customer in customers)
         {
             if (customer.Name.ToLower() == inputNamn.ToLower())
@@ -154,6 +166,8 @@ void MainMenu()
                 break;
             case '4':
                 inputNamn = String.Empty;
+                inputPassword = String.Empty;
+                loggedInCustomer = null;
                 loginOkBool = false;
                 loginOrRegBool = false;
                 mainMenuBool = false;
@@ -395,7 +409,7 @@ void ToCheckout()
 
     Console.WriteLine($"Totala priset:\n{totalPrice} SEK\n\n1. För att betala.");
 
-    Console.WriteLine();
+    Console.WriteLine("\n\nKonton och varukorgar:\n");
     foreach (var customer in customers)
     {
         Console.WriteLine(customer);
