@@ -1,6 +1,6 @@
 ﻿namespace Lab_2;
 
-public record Customer
+public class Customer
 {
     private string _name;
     public string Name
@@ -40,5 +40,11 @@ public record Customer
 
         output += "\n";
         return output;
+    }
+
+    //metod som verifierar lösenord och returnerar bool
+    public bool IsPasswordOk(string inputPassword)
+    {
+        return Password.Equals(inputPassword);
     }
 }

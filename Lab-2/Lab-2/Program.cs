@@ -17,7 +17,7 @@ customers.Add(new Customer("Knatte", "123"));
 customers.Add(new Customer("Fnatte", "321"));
 customers.Add(new Customer("Tjatte", "213"));
 
-products.AddRange(new []
+products.AddRange(new[]
 {
     new Product(1, "Äpple",10),
     new Product(2, "Banan", 15),
@@ -63,7 +63,6 @@ void AddCustomer()
     Console.WriteLine("Lösenord:");
     inputPassword = Console.ReadLine();
 
-    //Jag vet att denna ligger sist i listan, måste jag använda en Foreach-loop för att ge loggedInCustomer rätt värde?
     customers.Add(new Customer(inputNamn, inputPassword + ""));
     loginOkBool = true;
     mainMenuBool = true;
@@ -71,21 +70,28 @@ void AddCustomer()
     Console.WriteLine("Loggar in...");
     Thread.Sleep(1000);
 
-    foreach (var customer in customers)
-    {
-        if (customer.Name == inputNamn && customer.Password == inputPassword)
-        {
-            loggedInCustomer = customer;
-            break;
-        }
-    }
+    //Jag vet att denna ligger sist i listan, måste jag använda en Foreach-loop för att ge loggedInCustomer rätt värde?
+    //foreach (var customer in customers)
+    //{
+    //    if (customer.Name == inputNamn && customer.Password == inputPassword)
+    //    {
+    //        loggedInCustomer = customer;
+    //        break;
+    //    }
+    //}
 
+    //OVANSTÅENDE UTKOMMENTERAT BÖR GÖRA SAMMA SAK SOM NEDANSTÅENDE.
+
+    loggedInCustomer = customers.LastOrDefault();
 
     MainMenu();
 }
 
 void LoginCheck()
 {
+    loginOkBool = false;
+    loggedInCustomer = null;
+
     while (loginOkBool == false)
     {
         Console.Write("Namn: ");
@@ -96,17 +102,16 @@ void LoginCheck()
         //Med denna lösningen kan det inte finnas två konton med samma namn
         foreach (var customer in customers)
         {
-            if (customer.Name.ToLower() == inputNamn.ToLower())
+            if (customer.Name.ToLower().Equals(inputNamn.ToLower()))
             {
-                if (customer.Password == inputPassword)
+                if (customer.IsPasswordOk(inputPassword))
                 {
-                    loginOkBool = true;
+                    loggedInCustomer = customer;
                     Console.Clear();
                     Console.WriteLine("Loggar in...");
                     Thread.Sleep(1000);
                     mainMenuBool = true;
-
-                    loggedInCustomer = customer;
+                    loginOkBool = true;
 
                     MainMenu();
                 }
@@ -118,6 +123,7 @@ void LoginCheck()
                     Console.ReadKey(true);
                     Console.Clear();
 
+                    //Är detta fel? Väldigt smidigt i alla fall.
                     LoginCheck();
                 }
             }
